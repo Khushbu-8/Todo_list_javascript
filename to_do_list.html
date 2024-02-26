@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To_DO_List </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+
+
+    <div class="todolist">
+        <!-- data input table -->
+        <h2 align="center"> TO DO LIST</h2>
+
+        <table align="center" border="0">
+            <tr>
+                <td><input type="text" id="list" placeholder="Enter Task"> </td>
+                <td><button type="submit" onclick="saveR()" id="addlist">Add</button></td>
+            </tr>
+
+        </table>
+
+        <br><br>
+        <!-- data  add in table -->
+        <table align="center" border="0">
+            <thead>
+                <tr>
+                    <!-- <td>SrNo</td>
+                <td>List</td>
+                <td>Action</td> -->
+             </tr>
+            </thead>
+            <tbody id="allrecord"></tbody>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+
+        let record = [];
+
+        let edit_id = null;
+        const userBtn = document.getElementById('addlist');
+        // save text change into add
+        const btntex = userBtn.innerText;
+        // display
+        const viewRecord = () => {
+            var tbl = "";
+            record.map((val, i) => {
+                return (
+                    tbl += `
+                        <tr>
+                          <td style = "width : 100%;  background: rgba(255, 255, 255, 0.8);
+                              border-radius: 5px; padding-left: 10px; "> ${i + 1}. ${val.list}</td>
+                            <td>
+                                <button onclick = "EditRcord(${i})"  style="  background: #4caf50; border: 0;padding: 10px; border-radius: 5px;  ">Edit</button>
+                             </td>
+                
+                            <td>
+                                <button onclick = "deleteRcord(${i})" style="  background: #2196f3; border: 0;padding: 10px; border-radius: 5px;  ">Delet</button>
+                             </td>
+                                </tr> 
+                    `
+                );
+            });
+            document.getElementById('allrecord').innerHTML = tbl;
+        }
+        viewRecord();
+
+        // Data save in table by this function'
+
+        // onclick for save record
+        const saveR = () => {
+            let userlist = document.getElementById('list').value;
+            let obj = {
+                list : userlist,
+            }
+
+            if (edit_id != null) {
+                record.splice(edit_id, 1, obj); //input box edit value avse
+                edit_id = null;//
+            } else {
+
+                record.push(obj);
+            }
+            viewRecord();
+            // reuse of input box for input data
+            document.getElementById('list').value = "";
+            userBtn.innerText = btntex;
+
+
+        }
+// Delet List..
+
+        const deleteRcord = (id) => {
+            record.splice(id, 1);
+
+            viewRecord();
+
+        }
+
+        // Edit List..
+
+        const EditRcord = (id) => {
+            edit_id = id;
+            let userlist = document.getElementById('list').value = record[id].list;
+            userBtn.innerText = 'save';// btn change
+
+            viewRecord();
+
+        }
+
+    </script>
+</body>
+
+</html>
